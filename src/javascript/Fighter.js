@@ -68,29 +68,44 @@ class Fighter extends View {
     static fight(firstFighter, secondFighter) {
 
         let firstFighterPromise = new Promise((resolve, reject) => {
-            // console.log(this.getHitPower());
             let firstFighterHit = setInterval(() => {
+                console.log('first hit second', secondFighter.health);
                 secondFighter.health -= (firstFighter.getHitPower() - firstFighter.getBlockPower());
                 if(secondFighter.health <= 0) {
-                    resolve(firstFighterHit);
+                    clearInterval(firstFighterHit);
+                    resolve(firstFighter.name);
                 }
             }, 3000);   
-        });
 
-        let secondFighterPromise = new Promise((resolve, reject) => {
-            // console.log(this.getHitPower());
             setTimeout(() => {
                 let secondFighterHit = setInterval(() => {
+                    console.log('second hit first', firstFighter.health);
                     firstFighter.health -= (secondFighter.getHitPower() - secondFighter.getBlockPower());
                     if(firstFighter.health <= 0) {
-                        resolve(secondFighterHit);
+                        clearInterval(secondFighterHit);
+                        resolve(secondFighter.name);
                     }
                 }, 3000);
-            }, 1000);   
+            }, 1000); 
         });
 
-        firstFighterPromise.then(result => clearInterval(result), error => console.error("Rejected: " + error.message));
-        secondFighterPromise.then(result => clearInterval(result), error => console.error("Rejected: " + error.message));
+        // let secondFighterPromise = new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         let secondFighterHit = setInterval(() => {
+        //             console.log('first', firstFighter.health);
+        //             firstFighter.health -= (secondFighter.getHitPower() - secondFighter.getBlockPower());
+        //             if(firstFighter.health <= 0) {
+        //                 resolve(secondFighterHit);
+        //             }
+        //         }, 3000);
+        //     }, 1000);   
+        // });
+
+        firstFighterPromise.then(result => { 
+            alert(`Winner is: ${result}`);
+            
+         }, error => console.error("Rejected: " + error.message));
+        // secondFighterPromise.then(result => clearInterval(result), error => console.error("Rejected: " + error.message));
     }
 }
 export default Fighter;
