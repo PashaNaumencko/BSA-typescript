@@ -63,12 +63,6 @@ class modalView extends View {
       attack: attack,
       defense: defense,
     });
-    // const fighterHealthElement = this.createFighterHealthInput(health);
-    // const fighterAttackElement = this.createFighterAttackInput(attack);
-    // const defenseFieldElement = this.createDefenseField('defense', defense);
-
-    // formElement.append(this.createInfoLabel('health: ', 'health'), fighterHealthElement);
-    // formElement.append(this.createInfoLabel('attack: ', 'attack'), fighterAttackElement);
 
     modalBodyElement.append(figherImageElement, this.formElement);
 
@@ -106,7 +100,7 @@ class modalView extends View {
     return imgElement;
   }
 
-  createFigherField(field, value, name) {
+  createFigherField(field, value) {
     const attributes = { type: 'number', id: `${field}`, name: `${field}` };
     const figherFieldElement = this.createElement({ 
         tagName: 'input', 
@@ -116,34 +110,6 @@ class modalView extends View {
     figherFieldElement.value = value;
     return figherFieldElement;
   }
-
-  // createDefenseField(fieldText, defense) {
-  //   const defenseFieldElement = this.createElement({ tagName: 'span', className: 'name' });
-  //   defenseFieldElement.innerText = `${fieldText}: ${defense}`;
-  //   return defenseFieldElement;
-  // }
-
-  // createFighterHealthInput(health) {
-  //   const attributes = { type: 'number', id: 'health' };
-  //   const fighterHealthElement = this.createElement({ 
-  //       tagName: 'input', 
-  //       className: 'input',
-  //       attributes
-  //   });
-  //   fighterHealthElement.value = health;
-  //   return fighterHealthElement;
-  // }
-
-  // createFighterAttackInput(attack) {
-  //   const attributes = { type: 'number', id: 'attack' };
-  //   const fighterAttackElement = this.createElement({ 
-  //       tagName: 'input', 
-  //       className: 'input',
-  //       attributes
-  //   });
-  //   fighterAttackElement.value = attack;
-  //   return fighterAttackElement;
-  // }
 
   createInfoLabel(field) {
     const attributes = { for: field };
@@ -164,14 +130,14 @@ class modalView extends View {
     return modalFooterElement;
   }
 
-  createSubmitButton(value) {
+  createSubmitButton(buttonText) {
     const attributes = { type: 'submit', id: 'submit', form: 'info-form' };
     const submitButtonElement = this.createElement({ 
         tagName: 'button', 
         className: 'button',
         attributes
     });
-    submitButtonElement.value = value;
+    submitButtonElement.innerText = buttonText;
     return submitButtonElement;
   }
 }
