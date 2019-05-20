@@ -1,20 +1,20 @@
 import View from './view';
 
 class FighterView extends View {
-  constructor(fighter, handleClick) {
+  constructor(fighter, handleClick, handleCheckBoxClick) {
     super();
     this.selected = false;
     this.fighter = fighter;
 
-    this.createFighter(fighter, handleClick);
+    this.createFighter(fighter, handleClick, handleCheckBoxClick);
     
   }
 
-  createFighter(fighter, handleClick) {
+  createFighter(fighter, handleClick, handleCheckBoxClick) {
     const { name, source } = fighter;
     const nameElement = this.createName(name);
     const imageElement = this.createImage(source);
-    const checkBoxElement = this.createCheckbox(name);
+    const checkBoxElement = this.createCheckBox(name, handleCheckBoxClick);
 
     this.element = this.createElement({ tagName: 'div', className: 'fighter' });
     this.element.append(imageElement, nameElement, checkBoxElement);
@@ -39,7 +39,7 @@ class FighterView extends View {
     return imgElement;
   }
 
-  createCheckbox(name) {
+  createCheckBox(name, handleCheckBoxClick) {
     const attributes = { type: 'checkbox', id: `${name}`, name: `${name}` };
     const checkBoxElement = this.createElement({ 
         tagName: 'input', 
@@ -49,7 +49,8 @@ class FighterView extends View {
     checkBoxElement.addEventListener('click', event => {
       event.stopPropagation();
       this.selected = true;
-    } );
+      handleCheckBoxClick(event, this.fighter);
+    });
     return checkBoxElement;
   }
 }

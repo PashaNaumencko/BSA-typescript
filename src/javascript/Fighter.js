@@ -54,22 +54,23 @@ class Fighter extends View {
     }
 
     getHitPower() {
-        return this.attack * this.criticalChance(1, 2);
+        return this.attack * Fighter.criticalChance(1, 2);
     }
 
     getBlockPower() {
-        return this.defense * this.criticalChance(1, 2);
+        return this.defense * Fighter.criticalChance(1, 2);
     }
 
-    criticalChance(min, max) {
+    static criticalChance(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     static fight(firstFighter, secondFighter) {
 
         let firstFighterPromise = new Promise((resolve, reject) => {
+            // console.log(this.getHitPower());
             let firstFighterHit = setInterval(() => {
-                secondFighter.health -= (this.getHitPower() - this.getBlockPower());
+                secondFighter.health -= (firstFighter.getHitPower() - firstFighter.getBlockPower());
                 if(secondFighter.health <= 0) {
                     resolve(firstFighterHit);
                 }
@@ -77,9 +78,10 @@ class Fighter extends View {
         });
 
         let secondFighterPromise = new Promise((resolve, reject) => {
+            // console.log(this.getHitPower());
             setTimeout(() => {
                 let secondFighterHit = setInterval(() => {
-                    firstFighter.health -= (this.getHitPower() - this.getBlockPower());
+                    firstFighter.health -= (secondFighter.getHitPower() - secondFighter.getBlockPower());
                     if(firstFighter.health <= 0) {
                         resolve(secondFighterHit);
                     }

@@ -15,7 +15,7 @@ body {
 }
 
 
-.battle-container {
+.fight-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,7 +23,7 @@ body {
     width: 100%;
 }
 
-.battle {
+.fight {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -33,6 +33,13 @@ body {
 }
 
 
+.fighters-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
 
 .fighters {
     display: flex;

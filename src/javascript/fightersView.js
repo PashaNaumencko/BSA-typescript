@@ -2,7 +2,7 @@ import View from './view';
 import FighterView from './fighterView';
 import { fighterService } from './services/fightersService';
 import modalView from './modalView';
-import BattleView from './battleView';
+import FightView from './fightView';
 import App from './app';
 import Fighter from './Fighter';
 
@@ -13,6 +13,7 @@ class FightersView extends View {
     
     this.handleClick = this.handleFighterClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCheckBoxClick = this.handleCheckBoxClick.bind(this);
     this.createFighters(fighters);
   }
 
@@ -21,14 +22,18 @@ class FightersView extends View {
 
   createFighters(fighters) {
 
-    const fighterElements = fighters.map(fighter => {
-      const fighterView = new FighterView(fighter, this.handleClick);
+    const fightButtonElement = this.createFightButton('Create Fight');
+
+    const fightersElement = fighters.map(fighter => {
+      const fighterView = new FighterView(fighter, this.handleClick, this.handleCheckBoxClick);
       this.fighterViews.push(fighterView);
       return fighterView.element;
     });
 
-    this.element = this.createElement({ tagName: 'div', className: 'fighters' });
-    this.element.append(...fighterElements);
+    const fightersContainerElement = this.createElement({ tagName: 'div', className: 'fighters' });
+    fightersContainerElement.append(...fightersElement);
+    this.element = this.createElement({ tagName: 'div', className: 'fighters-container' });
+    this.element.append(fightButtonElement, fightersContainerElement);
   }
 
 
@@ -77,28 +82,35 @@ class FightersView extends View {
     }
   }
 
-  createBattleButton(buttonText) {
+  async handleCheckBoxClick(event, fighter) {
+    if (!this.fightersDetailsMap.has(fighter._id)) {
+      const fighterDetails = await fighterService.getFighterDetails(fighter._id);
+      this.fightersDetailsMap.set(fighter._id, fighterDetails);  
+    }
+  }
+
+  createFightButton(buttonText) {
     const attributes = { type: 'button', id: 'battleButton'};
-    const battleButtonElement = this.createElement({ 
+    const fightButtonElement = this.createElement({ 
         tagName: 'button', 
         className: 'battle-button',
         attributes
     });
-    battleButtonElement.innerText = buttonText;
-    battleButtonElement.addEventListener('click', event => {
+    fightButtonElement.innerText = buttonText;
+    fightButtonElement.addEventListener('click', event => {
       this.selectFighters();
       if(this.fighterViews.length !== 2) {
         alert("Please select two fighers");
       }
       else {
         this.element.remove();
-        const battleView = new BattleView(this.fighterViews);
-        const battleElement = battleView.element;
-        battleButtonElement.remove();
-        App.rootElement.append(battleElement);
+        const fightView = new FightView(this.fighterViews);
+        const fightElement = fightView.element;
+        fightButtonElement.remove();
+        App.rootElement.append(fightElement);
       }
     });
-    return battleButtonElement;
+    return fightButtonElement;
   }
 }
 

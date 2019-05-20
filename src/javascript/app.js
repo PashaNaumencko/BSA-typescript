@@ -15,10 +15,9 @@ class App {
       
       const fighters = await fighterService.getFighters();
       const fightersView = new FightersView(fighters);
-      const battleButton = fightersView.createBattleButton('Create Fight');
-      const fightersElement = fightersView.element;
+      const fightersElement = fightersView.element;      
 
-      App.rootElement.append(battleButton, fightersElement);
+      App.rootElement.append(fightersElement);
     } catch (error) {
       console.warn(error);
       App.rootElement.innerText = 'Failed to load data';
