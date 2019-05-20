@@ -66,6 +66,7 @@ class Fighter extends View {
     }
 
     static fight(firstFighter, secondFighter) {
+
         let firstFighterPromise = new Promise((resolve, reject) => {
             let firstFighterHit = setInterval(() => {
                 secondFighter.health -= (this.getHitPower() - this.getBlockPower());

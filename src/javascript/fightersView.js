@@ -94,6 +94,7 @@ class FightersView extends View {
         this.element.remove();
         const battleView = new BattleView(this.fighterViews);
         const battleElement = battleView.element;
+        battleButtonElement.remove();
         App.rootElement.append(battleElement);
       }
     });

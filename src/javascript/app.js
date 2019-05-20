@@ -15,7 +15,7 @@ class App {
       
       const fighters = await fighterService.getFighters();
       const fightersView = new FightersView(fighters);
-      const battleButton = fightersView.createBattleButton('Create Battle');
+      const battleButton = fightersView.createBattleButton('Create Fight');
       const fightersElement = fightersView.element;
 
       App.rootElement.append(battleButton, fightersElement);
