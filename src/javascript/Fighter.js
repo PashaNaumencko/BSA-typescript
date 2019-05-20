@@ -66,46 +66,58 @@ class Fighter extends View {
     }
 
     static fight(firstFighter, secondFighter) {
-
-        let firstFighterPromise = new Promise((resolve, reject) => {
-            let firstFighterHit = setInterval(() => {
-                console.log('first hit second', secondFighter.health);
-                secondFighter.health -= (firstFighter.getHitPower() - firstFighter.getBlockPower());
-                if(secondFighter.health <= 0) {
-                    clearInterval(firstFighterHit);
-                    resolve(firstFighter.name);
-                }
-            }, 3000);   
-
-            setTimeout(() => {
-                let secondFighterHit = setInterval(() => {
-                    console.log('second hit first', firstFighter.health);
-                    firstFighter.health -= (secondFighter.getHitPower() - secondFighter.getBlockPower());
-                    if(firstFighter.health <= 0) {
-                        clearInterval(secondFighterHit);
-                        resolve(secondFighter.name);
-                    }
-                }, 3000);
-            }, 1000); 
+        let fighterPromise = new Promise((resolve, reject) => {
+            let fightersHit = setInterval(() => {
+                Fighter.simulateFirstFighterHit(firstFighter, secondFighter, fightersHit, resolve);
+                Fighter.simulateSecondFighterHit(firstFighter, secondFighter, fightersHit, resolve); 
+            }, 1500);   
         });
+        fighterPromise.then(result => { 
+            alert(`Winner is: ${result}`); 
+        }).catch(error => console.warn(error));
+    }
 
-        // let secondFighterPromise = new Promise((resolve, reject) => {
-        //     setTimeout(() => {
-        //         let secondFighterHit = setInterval(() => {
-        //             console.log('first', firstFighter.health);
-        //             firstFighter.health -= (secondFighter.getHitPower() - secondFighter.getBlockPower());
-        //             if(firstFighter.health <= 0) {
-        //                 resolve(secondFighterHit);
-        //             }
-        //         }, 3000);
-        //     }, 1000);   
-        // });
+    static simulateFirstFighterHit(firstFighter, secondFighter, interval, resolve) {
+        console.log('first hit second', secondFighter.health);
+        let hit = firstFighter.getHitPower() - firstFighter.getBlockPower();
+        if (hit < 0) {
+            hit = 0;
+        }
+        secondFighter.health -= hit;
+        const fighterHealth = firstFighter.createInfoSpan('health', firstFighter.health);
+        firstFighter.element.childNodes[2].replaceWith(fighterHealth);
+        
 
-        firstFighterPromise.then(result => { 
-            alert(`Winner is: ${result}`);
-            
-         }, error => console.error("Rejected: " + error.message));
-        // secondFighterPromise.then(result => clearInterval(result), error => console.error("Rejected: " + error.message));
+        if(secondFighter.health <= 0) {
+            clearInterval(interval);
+            resolve(firstFighter.name);
+        } 
+        else if(firstFighter.health <= 0) {
+            clearInterval(interval);
+            resolve(secondFighter.name);
+        }
+    }
+
+    static simulateSecondFighterHit(firstFighter, secondFighter, interval, resolve) {
+        setTimeout(() => {
+            console.log('second hit first', firstFighter.health);
+            let hit = secondFighter.getHitPower() - secondFighter.getBlockPower();
+            if (hit < 0) {
+                hit = 0;
+            }
+            firstFighter.health -= hit;
+            const fighterHealth = secondFighter.createInfoSpan('health', secondFighter.health);
+            secondFighter.element.childNodes[2].replaceWith(fighterHealth);
+
+            if(firstFighter.health <= 0) {
+                clearInterval(interval);
+                resolve(secondFighter.name);
+            }
+            else if(secondFighter.health <= 0) {
+                clearInterval(interval);
+                resolve(firstFighter.name);
+            }
+        }, 500); 
     }
 }
 export default Fighter;

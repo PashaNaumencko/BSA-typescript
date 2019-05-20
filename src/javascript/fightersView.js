@@ -70,23 +70,33 @@ class FightersView extends View {
     // get from map or load info and add to fightersMap
     // show modal with fighter info
     // allow to edit health and power in this modal
-    if (this.fightersDetailsMap.has(fighter._id)) {
-      const fighterDetails = this.fightersDetailsMap.get(fighter._id);
-      this.createModal(fighterDetails);
-      
+    try {
+      if (this.fightersDetailsMap.has(fighter._id)) {
+        const fighterDetails = this.fightersDetailsMap.get(fighter._id);
+        this.createModal(fighterDetails);
+        
+      }
+      else {
+        const fighterDetails = await fighterService.getFighterDetails(fighter._id);
+        this.fightersDetailsMap.set(fighter._id, fighterDetails);
+        this.createModal(fighterDetails);
+      }
     }
-    else {
-      const fighterDetails = await fighterService.getFighterDetails(fighter._id);
-      this.fightersDetailsMap.set(fighter._id, fighterDetails);
-      this.createModal(fighterDetails);
-    }
+    catch (error) {
+      console.warn(error);
+    } 
   }
 
   async handleCheckBoxClick(event, fighter) {
-    if (!this.fightersDetailsMap.has(fighter._id)) {
-      const fighterDetails = await fighterService.getFighterDetails(fighter._id);
-      this.fightersDetailsMap.set(fighter._id, fighterDetails);  
+    try {
+      if (!this.fightersDetailsMap.has(fighter._id)) {
+        const fighterDetails = await fighterService.getFighterDetails(fighter._id);
+        this.fightersDetailsMap.set(fighter._id, fighterDetails);  
+      }
     }
+    catch (error) {
+      console.warn(error);
+    } 
   }
 
   createFightButton(buttonText) {
