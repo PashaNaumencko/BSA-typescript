@@ -115,7 +115,7 @@ class modalView extends View {
     const attributes = { for: field };
     const infoLabelElement = this.createElement({ 
         tagName: 'label', 
-        className: 'name',
+        className: 'label',
         attributes
     });
     infoLabelElement.innerText = field;
@@ -134,7 +134,7 @@ class modalView extends View {
     const attributes = { type: 'submit', id: 'submit', form: 'info-form' };
     const submitButtonElement = this.createElement({ 
         tagName: 'button', 
-        className: 'button',
+        className: 'btn',
         attributes
     });
     submitButtonElement.innerText = buttonText;

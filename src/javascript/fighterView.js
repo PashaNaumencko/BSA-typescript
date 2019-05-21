@@ -4,6 +4,7 @@ class FighterView extends View {
   constructor(fighter, handleClick, handleCheckBoxClick) {
     super();
     this.selected = false;
+    this.fighter = fighter;
 
     this.createFighter(fighter, handleClick, handleCheckBoxClick);
     

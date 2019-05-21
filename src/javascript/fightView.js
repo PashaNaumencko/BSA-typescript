@@ -43,7 +43,7 @@ class FightView extends View {
         const attributes = { type: 'button', id: 'battleButton'};
         const startFightButtonElement = this.createElement({ 
             tagName: 'button', 
-            className: 'battle-button',
+            className: 'btn',
             attributes
         });
         startFightButtonElement.innerText = buttonText;
@@ -57,7 +57,7 @@ class FightView extends View {
         const attributes = { type: 'button', id: 'battleButton'};
         const backButtonElement = this.createElement({ 
             tagName: 'button', 
-            className: 'battle-button',
+            className: 'btn',
             attributes
         });
         backButtonElement.innerText = buttonText;
@@ -65,7 +65,5 @@ class FightView extends View {
 
         return backButtonElement;
     }
-
-    
 }
 export default FightView;

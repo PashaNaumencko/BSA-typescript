@@ -120,7 +120,7 @@ class FightersView extends View {
     const attributes = { type: 'button', id: 'battleButton'};
     const fightButtonElement = this.createElement({ 
         tagName: 'button', 
-        className: 'battle-button',
+        className: 'btn',
         attributes
     });
     fightButtonElement.innerText = buttonText;
