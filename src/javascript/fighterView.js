@@ -4,7 +4,6 @@ class FighterView extends View {
   constructor(fighter, handleClick, handleCheckBoxClick) {
     super();
     this.selected = false;
-    this.fighter = fighter;
 
     this.createFighter(fighter, handleClick, handleCheckBoxClick);
     
@@ -14,7 +13,7 @@ class FighterView extends View {
     const { name, source } = fighter;
     const nameElement = this.createName(name);
     const imageElement = this.createImage(source);
-    const checkBoxElement = this.createCheckBox(name, handleCheckBoxClick);
+    const checkBoxElement = this.createCheckBox(name, fighter, handleCheckBoxClick);
 
     this.element = this.createElement({ tagName: 'div', className: 'fighter' });
     this.element.append(imageElement, nameElement, checkBoxElement);
@@ -39,7 +38,7 @@ class FighterView extends View {
     return imgElement;
   }
 
-  createCheckBox(name, handleCheckBoxClick) {
+  createCheckBox(name, fighter, handleCheckBoxClick) {
     const attributes = { type: 'checkbox', id: `${name}`, name: `${name}` };
     const checkBoxElement = this.createElement({ 
         tagName: 'input', 
@@ -47,9 +46,9 @@ class FighterView extends View {
         attributes
     });
     checkBoxElement.addEventListener('click', event => {
-      event.stopPropagation();
-      this.selected = true;
-      handleCheckBoxClick(event, this.fighter);
+      // this.selected = checkBoxElement.checked;
+      this.selected = !this.selected;
+      handleCheckBoxClick(event, fighter);
     });
     return checkBoxElement;
   }

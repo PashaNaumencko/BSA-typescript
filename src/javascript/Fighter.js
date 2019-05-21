@@ -78,16 +78,6 @@ class Fighter extends View {
     }
 
     static simulateFirstFighterHit(firstFighter, secondFighter, interval, resolve) {
-        console.log('first hit second', secondFighter.health);
-        let hit = firstFighter.getHitPower() - firstFighter.getBlockPower();
-        if (hit < 0) {
-            hit = 0;
-        }
-        secondFighter.health -= hit;
-        const fighterHealth = firstFighter.createInfoSpan('health', firstFighter.health);
-        firstFighter.element.childNodes[2].replaceWith(fighterHealth);
-        
-
         if(secondFighter.health <= 0) {
             clearInterval(interval);
             resolve(firstFighter.name);
@@ -96,19 +86,18 @@ class Fighter extends View {
             clearInterval(interval);
             resolve(secondFighter.name);
         }
+
+        let hit = firstFighter.getHitPower() - firstFighter.getBlockPower();
+        if (hit < 0) {
+            hit = 0;
+        }
+        secondFighter.health -= hit;
+        const fighterHealth = firstFighter.createInfoSpan('health', firstFighter.health);
+        firstFighter.element.childNodes[2].replaceWith(fighterHealth);
     }
 
     static simulateSecondFighterHit(firstFighter, secondFighter, interval, resolve) {
         setTimeout(() => {
-            console.log('second hit first', firstFighter.health);
-            let hit = secondFighter.getHitPower() - secondFighter.getBlockPower();
-            if (hit < 0) {
-                hit = 0;
-            }
-            firstFighter.health -= hit;
-            const fighterHealth = secondFighter.createInfoSpan('health', secondFighter.health);
-            secondFighter.element.childNodes[2].replaceWith(fighterHealth);
-
             if(firstFighter.health <= 0) {
                 clearInterval(interval);
                 resolve(secondFighter.name);
@@ -117,6 +106,14 @@ class Fighter extends View {
                 clearInterval(interval);
                 resolve(firstFighter.name);
             }
+
+            let hit = secondFighter.getHitPower() - secondFighter.getBlockPower();
+            if (hit < 0) {
+                hit = 0;
+            }
+            firstFighter.health -= hit;
+            const fighterHealth = secondFighter.createInfoSpan('health', secondFighter.health);
+            secondFighter.element.childNodes[2].replaceWith(fighterHealth);
         }, 500); 
     }
 }

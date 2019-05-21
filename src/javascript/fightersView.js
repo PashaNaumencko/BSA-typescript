@@ -14,15 +14,17 @@ class FightersView extends View {
     this.handleClick = this.handleFighterClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCheckBoxClick = this.handleCheckBoxClick.bind(this);
+    this.handleFightButtonClick = this.handleFightButtonClick.bind(this);
     this.createFighters(fighters);
   }
 
   fightersDetailsMap = new Map();
   fighterViews = [];
+  selectedFighters = []
 
   createFighters(fighters) {
 
-    const fightButtonElement = this.createFightButton('Create Fight');
+    const fightButtonElement = this.createFightButton('Create Fight', this.handleFightButtonClick);
 
     const fightersElement = fighters.map(fighter => {
       const fighterView = new FighterView(fighter, this.handleClick, this.handleCheckBoxClick);
@@ -38,7 +40,7 @@ class FightersView extends View {
 
 
   selectFighters() {
-    this.fighterViews = this.fighterViews.filter(fighter => fighter.selected).map(selectedFighter => {
+    this.selectedFighters = this.fighterViews.filter(fighter => fighter.selected).map(selectedFighter => {
       const selectedFighterId = selectedFighter.fighter._id;
       console.log(selectedFighter);
       const currentSelectedFighter = this.fightersDetailsMap.get(selectedFighterId);
@@ -46,7 +48,7 @@ class FightersView extends View {
       const {name, source, health, attack, defense} = currentSelectedFighter;
       return new Fighter(name, source, health, attack, defense);
     });
-    console.log(this.fighterViews);
+    console.log(this.selectedFighters);
   }
 
   createModal(fighterDetails) {
@@ -89,6 +91,7 @@ class FightersView extends View {
 
   async handleCheckBoxClick(event, fighter) {
     try {
+      event.stopPropagation();
       if (!this.fightersDetailsMap.has(fighter._id)) {
         const fighterDetails = await fighterService.getFighterDetails(fighter._id);
         this.fightersDetailsMap.set(fighter._id, fighterDetails);  
@@ -99,7 +102,21 @@ class FightersView extends View {
     } 
   }
 
-  createFightButton(buttonText) {
+  handleFightButtonClick(event) {
+    this.selectFighters();
+    if(this.selectedFighters.length !== 2) {
+      alert("Please select two fighers");
+    }
+    else {
+      this.element.remove();
+      const fightView = new FightView(this.selectedFighters);
+      const fightElement = fightView.element;
+      this.element.childNodes[0].remove();
+      App.rootElement.append(fightElement);
+    }
+  }
+
+  createFightButton(buttonText, handleFightButtonClick) {
     const attributes = { type: 'button', id: 'battleButton'};
     const fightButtonElement = this.createElement({ 
         tagName: 'button', 
@@ -107,19 +124,7 @@ class FightersView extends View {
         attributes
     });
     fightButtonElement.innerText = buttonText;
-    fightButtonElement.addEventListener('click', event => {
-      this.selectFighters();
-      if(this.fighterViews.length !== 2) {
-        alert("Please select two fighers");
-      }
-      else {
-        this.element.remove();
-        const fightView = new FightView(this.fighterViews);
-        const fightElement = fightView.element;
-        fightButtonElement.remove();
-        App.rootElement.append(fightElement);
-      }
-    });
+    fightButtonElement.addEventListener('click', event => handleFightButtonClick(event));
     return fightButtonElement;
   }
 }

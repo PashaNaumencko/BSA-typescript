@@ -14,7 +14,10 @@ class FightView extends View {
 
     createFight(fighters) {
         this.element = this.createElement({ tagName: 'div', className: 'fight-container' });
-        const startFightButtonElement = this.createStartFightButton('Start Fight', event => Fighter.fight(...fighters));
+        const startFightButtonElement = this.createStartFightButton('Start Fight', event => {
+            alert("LET`S FIGHT BEGINS");
+            Fighter.fight(...fighters);
+        });
         const backButtonElement = this.createBackButton('Back', this.backHandleClick);
         const fightElement = this.createElement({ tagName: 'div', className: 'fight' });
         const fighterElements = fighters.map(fighter => fighter.element);
