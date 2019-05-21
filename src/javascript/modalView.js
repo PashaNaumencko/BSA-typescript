@@ -54,8 +54,6 @@ class modalView extends View {
 
   createModalBody(fighterDetails, handleSubmit) {
     const { health, attack, defense, source } = fighterDetails;
-    console.log(health, attack, defense, source);
-    console.log(fighterDetails);
     const modalBodyElement = this.createElement({ tagName: 'div', className: 'modal-body' });
     const figherImageElement = this.createFighterImage(source);
     this.formElement = this.createInfoForm('GET', fighterDetails._id, handleSubmit, {

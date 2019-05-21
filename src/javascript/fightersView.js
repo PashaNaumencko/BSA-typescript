@@ -42,13 +42,10 @@ class FightersView extends View {
   selectFighters() {
     this.selectedFighters = this.fighterViews.filter(fighter => fighter.selected).map(selectedFighter => {
       const selectedFighterId = selectedFighter.fighter._id;
-      console.log(selectedFighter);
       const currentSelectedFighter = this.fightersDetailsMap.get(selectedFighterId);
-      console.log(currentSelectedFighter);
       const {name, source, health, attack, defense} = currentSelectedFighter;
       return new Fighter(name, source, health, attack, defense);
     });
-    console.log(this.selectedFighters);
   }
 
   createModal(fighterDetails) {
@@ -68,10 +65,6 @@ class FightersView extends View {
   }
 
   async handleFighterClick(event, fighter) {
-    console.log('clicked');
-    // get from map or load info and add to fightersMap
-    // show modal with fighter info
-    // allow to edit health and power in this modal
     try {
       if (this.fightersDetailsMap.has(fighter._id)) {
         const fighterDetails = this.fightersDetailsMap.get(fighter._id);

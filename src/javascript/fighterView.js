@@ -47,7 +47,6 @@ class FighterView extends View {
         attributes
     });
     checkBoxElement.addEventListener('click', event => {
-      // this.selected = checkBoxElement.checked;
       this.selected = !this.selected;
       handleCheckBoxClick(event, fighter);
     });
