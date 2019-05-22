@@ -216,7 +216,7 @@ body {
 }
 
 .damage {
-    animation: blink 400ms alternate infinite;
+    animation: blink 400ms alternate;
 }
 
 .alert {

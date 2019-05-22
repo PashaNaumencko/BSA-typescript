@@ -50,10 +50,13 @@ class FightersView extends View {
       });
     }
     catch (error) {
-      const alertElement = new Alert('Something happened unexpectedly :(. Please repeat your action', true).element;
-      this.element.parentNode.append(alertElement);
-      console.warn(error);
+      if (error.type == TypeError) {
+        const alertElement = new Alert('Something happened unexpectedly :(. Please repeat your action', true).element;
+        this.element.parentNode.append(alertElement);
+        console.warn(error);
+      } 
     } 
+
   }
 
   createModal(fighterDetails) {

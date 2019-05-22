@@ -87,63 +87,65 @@ class Fighter extends View {
 
     static simulateFirstFighterHit(firstFighter, secondFighter, interval, resolve) {
         const firstFighterHealth = Fighter.getFighterHealthElement(firstFighter); 
-        const secondFighterHealth = Fighter.getFighterHealthElement(secondFighter);
+        const oldFirstFighterHealth = firstFighter.element.childNodes[2];
+        const secondFighterHealth = Fighter.getFighterHealthElement(secondFighter); 
+        const oldSecondFighterHealth = secondFighter.element.childNodes[2];
+
         if(secondFighter.health <= 0) {
-            clearInterval(interval);  
-            secondFighter.health = 0;
-            secondFighter.element.childNodes[2].replaceWith(Fighter.getFighterHealthElement(secondFighter));  
-            firstFighterHealth.classList.remove('damage');
-            secondFighterHealth.classList.remove('damage');         
+            clearInterval(interval); 
+            secondFighter.health = 0; 
+            oldSecondFighterHealth.replaceWith(secondFighterHealth);
+            
             resolve(firstFighter.name);
         } 
         else if(firstFighter.health <= 0) {
             clearInterval(interval);
             firstFighter.health = 0;
-            firstFighter.element.childNodes[2].replaceWith(Fighter.getFighterHealthElement(firstFighter));
-            firstFighterHealth.classList.remove('damage');
-            secondFighterHealth.classList.remove('damage');
+            oldFirstFighterHealth.replaceWith(firstFighterHealth);
+            
             resolve(secondFighter.name);
         }
 
-        let hit = firstFighter.getHitPower() - firstFighter.getBlockPower();
+        let hit = firstFighter.getHitPower() - secondFighter.getBlockPower();
         if (hit < 0) {
             hit = 0;
         }
         secondFighter.health -= hit;
         
         secondFighterHealth.classList.add('damage');
-        secondFighter.element.childNodes[2].replaceWith(secondFighterHealth);
+        oldSecondFighterHealth.replaceWith(secondFighterHealth);
     }
 
     static simulateSecondFighterHit(firstFighter, secondFighter, interval, resolve) {
         setTimeout(() => {
             const firstFighterHealth = Fighter.getFighterHealthElement(firstFighter); 
+            const oldFirstFighterHealth = firstFighter.element.childNodes[2];
             const secondFighterHealth = Fighter.getFighterHealthElement(secondFighter); 
+            const oldSecondFighterHealth = secondFighter.element.childNodes[2];
+
             if(firstFighter.health <= 0) {
-                clearInterval(interval);  
-                firstFighter.health = 0;
-                firstFighter.element.childNodes[2].replaceWith(Fighter.getFighterHealthElement(firstFighter)); 
-                firstFighterHealth.classList.remove('damage');
-                secondFighterHealth.classList.remove('damage');
+                clearInterval(interval); 
+                firstFighter.health = 0; 
+                oldFirstFighterHealth.replaceWith(firstFighterHealth);
+                 
                 resolve(secondFighter.name);
             }
             else if(secondFighter.health <= 0) {
                 clearInterval(interval); 
-                secondFighter.health = 0;
-                secondFighter.element.childNodes[2].replaceWith(Fighter.getFighterHealthElement(secondFighter));     
-                firstFighterHealth.classList.remove('damage');
-                secondFighterHealth.classList.remove('damage');
+                secondFighter.health = 0;      
+                oldSecondFighterHealth.replaceWith(secondFighterHealth);
+                 
                 resolve(firstFighter.name);
             }
 
-            let hit = secondFighter.getHitPower() - secondFighter.getBlockPower();
+            let hit = secondFighter.getHitPower() - firstFighter.getBlockPower();
             if (hit < 0) {
                 hit = 0;
             }
             firstFighter.health -= hit;
             
             firstFighterHealth.classList.add('damage');
-            firstFighter.element.childNodes[2].replaceWith(firstFighterHealth);
+            oldFirstFighterHealth.replaceWith(firstFighterHealth);
         }, 500); 
     }
 }
