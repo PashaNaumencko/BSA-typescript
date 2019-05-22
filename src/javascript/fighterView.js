@@ -43,7 +43,7 @@ class FighterView extends View {
     const attributes = { type: 'checkbox', id: `${name}`, name: `${name}` };
     const checkBoxElement = this.createElement({ 
         tagName: 'input', 
-        className: 'input',
+        className: 'checkbox',
         attributes
     });
     checkBoxElement.addEventListener('click', event => {

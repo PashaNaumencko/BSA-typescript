@@ -3,6 +3,7 @@ import Fighter from './Fighter';
 import App from './app';
 import FightersView from './fightersView';
 import { fighterService } from './services/fightersService';
+import Alert from './alert';
 
 class FightView extends View {
     constructor(fighters) {
@@ -15,7 +16,8 @@ class FightView extends View {
     createFight(fighters) {
         this.element = this.createElement({ tagName: 'div', className: 'fight-container' });
         const startFightButtonElement = this.createStartFightButton('Start Fight', event => {
-            alert("LET`S FIGHT BEGINS");
+            const alertElement = new Alert('LET`S FIGHT BEGINS').element;
+            this.element.parentNode.append(alertElement);
             Fighter.fight(...fighters);
         });
         const backButtonElement = this.createBackButton('Back', this.backHandleClick);
@@ -25,18 +27,9 @@ class FightView extends View {
         this.element.append(startFightButtonElement, backButtonElement, fightElement);
     }
 
-    async backHandleClick(event) {
-        try {
-            this.element.remove();
-            const fighters = await fighterService.getFighters();
-            const fightersView = new FightersView(fighters);
-            const fightersElement = fightersView.element;      
-            App.rootElement.append(fightersElement);
-        }
-        catch (error) {
-            console.warn(error);
-        } 
-        
+    backHandleClick(event) {
+        this.element.remove();
+        new App();
     }
 
     createStartFightButton(buttonText, handleClick) {

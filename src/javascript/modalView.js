@@ -43,11 +43,10 @@ class modalView extends View {
     return headerElement;
   }
 
-
   createCloseButton(buttonText) {
     const closeButtonElement = this.createElement({ tagName: 'span', className: 'close' });
     closeButtonElement.innerHTML = buttonText;
-    closeButtonElement.addEventListener('click', event => this.element.parentNode.removeChild(this.element), false);
+    closeButtonElement.addEventListener('click', event => this.element.remove(), false);
     return closeButtonElement;
   }
 
@@ -99,7 +98,7 @@ class modalView extends View {
   }
 
   createFigherField(field, value) {
-    const attributes = { type: 'number', id: `${field}`, name: `${field}` };
+    const attributes = { type: 'number', id: `${field}`, name: `${field}`, min: '1', max: '100' };
     const figherFieldElement = this.createElement({ 
         tagName: 'input', 
         className: 'input',

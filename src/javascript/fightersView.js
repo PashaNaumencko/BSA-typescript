@@ -5,6 +5,7 @@ import modalView from './modalView';
 import FightView from './fightView';
 import App from './app';
 import Fighter from './Fighter';
+import Alert from './alert';
 
 
 class FightersView extends View {
@@ -20,7 +21,7 @@ class FightersView extends View {
 
   fightersDetailsMap = new Map();
   fighterViews = [];
-  selectedFighters = []
+  selectedFighters = [];
 
   createFighters(fighters) {
 
@@ -40,12 +41,19 @@ class FightersView extends View {
 
 
   selectFighters() {
-    this.selectedFighters = this.fighterViews.filter(fighter => fighter.selected).map(selectedFighter => {
-      const selectedFighterId = selectedFighter.fighter._id;
-      const currentSelectedFighter = this.fightersDetailsMap.get(selectedFighterId);
-      const {name, source, health, attack, defense} = currentSelectedFighter;
-      return new Fighter(name, source, health, attack, defense);
-    });
+    try {
+      this.selectedFighters = this.fighterViews.filter(fighter => fighter.selected).map(selectedFighter => {
+        const selectedFighterId = selectedFighter.fighter._id;
+        const currentSelectedFighter = this.fightersDetailsMap.get(selectedFighterId);
+        const {name, source, health, attack, defense} = currentSelectedFighter;
+        return new Fighter(name, source, health, attack, defense);
+      });
+    }
+    catch (error) {
+      const alertElement = new Alert('Something happened unexpectedly :(. Please repeat your action', true).element;
+      this.element.parentNode.append(alertElement);
+      console.warn(error);
+    } 
   }
 
   createModal(fighterDetails) {
@@ -61,6 +69,8 @@ class FightersView extends View {
     currentValues.forEach(field => {
       currentFighter[field.name] = field.value;
     });
+    const alertElement = new Alert("Chars have sucessfully saved").element;
+    this.element.parentNode.append(alertElement);
     this.fightersDetailsMap.set(id, currentFighter);
   }
 
@@ -78,6 +88,8 @@ class FightersView extends View {
       }
     }
     catch (error) {
+      const alertElement = new Alert('Something happened unexpectedly :(. Please repeat your action', true).element;
+      this.element.parentNode.append(alertElement);
       console.warn(error);
     } 
   }
@@ -91,6 +103,8 @@ class FightersView extends View {
       }
     }
     catch (error) {
+      const alertElement = new Alert('Something happened unexpectedly :(. Please repeat your action', true).element;
+      this.element.parentNode.append(alertElement);
       console.warn(error);
     } 
   }
@@ -98,7 +112,8 @@ class FightersView extends View {
   handleFightButtonClick(event) {
     this.selectFighters();
     if(this.selectedFighters.length !== 2) {
-      alert("Please select two fighers");
+      const alertElement = new Alert('Please select two fighers', true).element;
+      this.element.parentNode.append(alertElement);
     }
     else {
       this.element.remove();

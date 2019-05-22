@@ -1,4 +1,6 @@
 import View from './view';
+import Alert from './alert';
+import App from './app';
 
 class Fighter extends View {
     constructor(name, source, health, attack, defense) {
@@ -53,6 +55,7 @@ class Fighter extends View {
         return infoSpanElement;
     }
 
+
     getHitPower() {
         return this.attack * Fighter.criticalChance(1, 2);
     }
@@ -73,17 +76,32 @@ class Fighter extends View {
             }, 1500);   
         });
         fighterPromise.then(result => { 
-            alert(`Winner is: ${result}`); 
+            const alertElement = new Alert(`WINNER IS: ${result}`).element;
+            App.rootElement.append(alertElement);
         }).catch(error => console.warn(error));
     }
 
+    static getFighterHealthElement(fighter) {
+        return fighter.createInfoSpan('health', fighter.health);
+    }
+
     static simulateFirstFighterHit(firstFighter, secondFighter, interval, resolve) {
+        const firstFighterHealth = Fighter.getFighterHealthElement(firstFighter); 
+        const secondFighterHealth = Fighter.getFighterHealthElement(secondFighter);
         if(secondFighter.health <= 0) {
-            clearInterval(interval);
+            clearInterval(interval);  
+            secondFighter.health = 0;
+            secondFighter.element.childNodes[2].replaceWith(Fighter.getFighterHealthElement(secondFighter));  
+            firstFighterHealth.classList.remove('damage');
+            secondFighterHealth.classList.remove('damage');         
             resolve(firstFighter.name);
         } 
         else if(firstFighter.health <= 0) {
             clearInterval(interval);
+            firstFighter.health = 0;
+            firstFighter.element.childNodes[2].replaceWith(Fighter.getFighterHealthElement(firstFighter));
+            firstFighterHealth.classList.remove('damage');
+            secondFighterHealth.classList.remove('damage');
             resolve(secondFighter.name);
         }
 
@@ -92,18 +110,29 @@ class Fighter extends View {
             hit = 0;
         }
         secondFighter.health -= hit;
-        const fighterHealth = firstFighter.createInfoSpan('health', firstFighter.health);
-        firstFighter.element.childNodes[2].replaceWith(fighterHealth);
+        
+        secondFighterHealth.classList.add('damage');
+        secondFighter.element.childNodes[2].replaceWith(secondFighterHealth);
     }
 
     static simulateSecondFighterHit(firstFighter, secondFighter, interval, resolve) {
         setTimeout(() => {
+            const firstFighterHealth = Fighter.getFighterHealthElement(firstFighter); 
+            const secondFighterHealth = Fighter.getFighterHealthElement(secondFighter); 
             if(firstFighter.health <= 0) {
-                clearInterval(interval);
+                clearInterval(interval);  
+                firstFighter.health = 0;
+                firstFighter.element.childNodes[2].replaceWith(Fighter.getFighterHealthElement(firstFighter)); 
+                firstFighterHealth.classList.remove('damage');
+                secondFighterHealth.classList.remove('damage');
                 resolve(secondFighter.name);
             }
             else if(secondFighter.health <= 0) {
-                clearInterval(interval);
+                clearInterval(interval); 
+                secondFighter.health = 0;
+                secondFighter.element.childNodes[2].replaceWith(Fighter.getFighterHealthElement(secondFighter));     
+                firstFighterHealth.classList.remove('damage');
+                secondFighterHealth.classList.remove('damage');
                 resolve(firstFighter.name);
             }
 
@@ -112,8 +141,9 @@ class Fighter extends View {
                 hit = 0;
             }
             firstFighter.health -= hit;
-            const fighterHealth = secondFighter.createInfoSpan('health', secondFighter.health);
-            secondFighter.element.childNodes[2].replaceWith(fighterHealth);
+            
+            firstFighterHealth.classList.add('damage');
+            firstFighter.element.childNodes[2].replaceWith(firstFighterHealth);
         }, 500); 
     }
 }
