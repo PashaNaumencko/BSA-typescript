@@ -1,19 +1,19 @@
 import FightersView from './fightersView';
-import { fighterService } from './services/fightersService';
+import { FighterService } from './services/fightersService';
 
 class App {
   constructor() {
     this.startApp();
   }
 
-  static rootElement = document.getElementById('root');
-  static loadingElement = document.getElementById('loading-overlay');
+  static rootElement : HTMLElement = document.getElementById('root');
+  static loadingElement : HTMLElement = document.getElementById('loading-overlay');
 
   async startApp() {
     try {
       App.loadingElement.style.visibility = 'visible';
       
-      const fighters = await fighterService.getFighters();
+      const fighters = await FighterService.getFighters();
       const fightersView = new FightersView(fighters);
       const fightersElement = fightersView.element;      
 

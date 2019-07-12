@@ -1,7 +1,7 @@
-import View from './view';
+import { View, Handler } from './view';
 
 class FighterView extends View {
-  constructor(fighter, handleClick, handleCheckBoxClick) {
+  constructor(fighter, handleClick : Handler, handleCheckBoxClick : Handler) {
     super();
     this.selected = false;
     this.fighter = fighter;

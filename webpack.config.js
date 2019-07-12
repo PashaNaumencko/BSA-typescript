@@ -7,6 +7,10 @@ module.exports = {
     filename: 'bundle.js',
     publicPath: '/dist/'
   },
+  resolve: {
+    modulesDirectories: ['node_modules'],
+    extensions: ['', '.js', '.ts'],
+  },
   module: {
     rules: [
       {
@@ -25,6 +29,11 @@ module.exports = {
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
+      },
+      {
+        test: /\.tsx?$/, 
+        loaders: ['ts-loader', 'babel-loader'], 
+        exclude: /node_modules/
       }
     ]
   },

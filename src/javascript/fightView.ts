@@ -1,12 +1,16 @@
-import View from './view';
+import { View, IAttributes, Handler } from './view';
 import Fighter from './Fighter';
 import App from './app';
-import FightersView from './fightersView';
-import { fighterService } from './services/fightersService';
-import Alert from './alert';
+import AlertView from './alertView';
+
+// interface IFighters {
+//     id: string;
+//     name: string;
+//     src: string;
+// }
 
 class FightView extends View {
-    constructor(fighters) {
+    constructor(fighters : Fighter) {
       super();
 
       this.backHandleClick = this.backHandleClick.bind(this);
@@ -14,9 +18,9 @@ class FightView extends View {
     }
 
     createFight(fighters) {
-        this.element = this.createElement({ tagName: 'div', className: 'fight-container' });
+        this.element = <HTMLDivElement>this.createElement({ tagName: 'div', className: 'fight-container' });
         const startFightButtonElement = this.createStartFightButton('Start Fight', event => {
-            const alertElement = new Alert('LET`S FIGHT BEGINS').element;
+            const alertElement : HTMLDivElement = <HTMLDivElement>new AlertView('LET THE FIGHT BEGINS').element;
             this.element.parentNode.append(alertElement);
             Fighter.fight(...fighters);
         });
@@ -27,14 +31,14 @@ class FightView extends View {
         this.element.append(startFightButtonElement, backButtonElement, fightElement);
     }
 
-    backHandleClick(event) {
+    backHandleClick(event : Event) {
         this.element.remove();
         new App();
     }
 
-    createStartFightButton(buttonText, handleClick) {
-        const attributes = { type: 'button', id: 'battleButton'};
-        const startFightButtonElement = this.createElement({ 
+    createStartFightButton(buttonText : string, handleClick : Handler) : HTMLButtonElement {
+        const attributes : IAttributes = { type: 'button', id: 'battleButton'};
+        const startFightButtonElement : HTMLButtonElement = <HTMLButtonElement>this.createElement({ 
             tagName: 'button', 
             className: 'btn',
             attributes
@@ -46,9 +50,9 @@ class FightView extends View {
         return startFightButtonElement;
     }
 
-    createBackButton(buttonText, handleClick) {
-        const attributes = { type: 'button', id: 'battleButton'};
-        const backButtonElement = this.createElement({ 
+    createBackButton(buttonText : string, handleClick : Handler) : HTMLButtonElement {
+        const attributes : IAttributes  = { type: 'button', id: 'battleButton'};
+        const backButtonElement : HTMLButtonElement = <HTMLButtonElement>this.createElement({ 
             tagName: 'button', 
             className: 'btn',
             attributes

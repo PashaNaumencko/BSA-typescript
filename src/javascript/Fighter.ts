@@ -1,9 +1,15 @@
-import View from './view';
-import Alert from './alert';
+import { View, IAttributes } from './view';
+import Alert from './alertView';
 import App from './app';
 
 class Fighter extends View {
-    constructor(name, source, health, attack, defense) {
+    private name : string;
+    private source : string;
+    private health : number;
+    private attack : number;
+    private defense : number;
+
+    constructor(name : string, source : string, health : number, attack : number, defense : number) {
         super();
 
         this.name = name;
@@ -18,27 +24,27 @@ class Fighter extends View {
         this.createFighter();
     }
 
-    createFighter() {
-        const nameElement = this.createName(this.name);
-        const imageElement = this.createImage(this.source);
-        const healthElement = this.createInfoSpan('health', this.health);
-        const attackElement = this.createInfoSpan('attack', this.attack);
-        const defenseElement = this.createInfoSpan('defense', this.defense);
+    createFighter() : void {
+        const nameElement : HTMLSpanElement = this.createName(this.name);
+        const imageElement : HTMLImageElement = this.createImage(this.source);
+        const healthElement : HTMLSpanElement = this.createInfoSpan('health', this.health);
+        const attackElement : HTMLSpanElement = this.createInfoSpan('attack', this.attack);
+        const defenseElement : HTMLSpanElement = this.createInfoSpan('defense', this.defense);
     
-        this.element = this.createElement({ tagName: 'div', className: 'fighter' });
+        this.element = <HTMLDivElement>this.createElement({ tagName: 'div', className: 'fighter' });
         this.element.append(imageElement, nameElement, healthElement, attackElement, defenseElement);
     }
 
-    createName(name) {
-        const nameElement = this.createElement({ tagName: 'span', className: 'name' });
+    createName(name : string) : HTMLSpanElement {
+        const nameElement : HTMLSpanElement = <HTMLSpanElement>this.createElement({ tagName: 'span', className: 'name' });
         nameElement.innerText = name;
     
         return nameElement;
     }
     
-    createImage(source) {
-        const attributes = { src: source };
-        const imgElement = this.createElement({
+    createImage(source : string) : HTMLImageElement {
+        const attributes : IAttributes = { src: source };
+        const imgElement : HTMLImageElement = <HTMLImageElement>this.createElement({
           tagName: 'img',
           className: 'fighter-image',
           attributes
@@ -46,8 +52,8 @@ class Fighter extends View {
         return imgElement;
     }
 
-    createInfoSpan(field, value) {
-        const infoSpanElement = this.createElement({ 
+    createInfoSpan(field : string, value : number) : HTMLSpanElement {
+        const infoSpanElement : HTMLSpanElement = <HTMLSpanElement>this.createElement({ 
             tagName: 'span', 
             className: 'chars',
         });
@@ -56,27 +62,27 @@ class Fighter extends View {
     }
 
 
-    getHitPower() {
+    getHitPower() : number {
         return this.attack * Fighter.criticalChance(1, 2);
     }
 
-    getBlockPower() {
+    getBlockPower() : number {
         return this.defense * Fighter.criticalChance(1, 2);
     }
 
-    static criticalChance(min, max) {
+    static criticalChance(min : number, max : number) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    static fight(firstFighter, secondFighter) {
-        let fighterPromise = new Promise((resolve, reject) => {
+    static fight(firstFighter : Fighter, secondFighter : Fighter) : void {
+        let fighterPromise : Promise<any> = new Promise((resolve, reject) => {
             let fightersHit = setInterval(() => {
                 Fighter.simulateFirstFighterHit(firstFighter, secondFighter, fightersHit, resolve);
                 Fighter.simulateSecondFighterHit(firstFighter, secondFighter, fightersHit, resolve); 
             }, 1500);   
         });
         fighterPromise.then(result => { 
-            const alertElement = new Alert(`WINNER IS: ${result}`).element;
+            const alertElement : HTMLDivElement = <HTMLDivElement>new Alert(`WINNER IS: ${result}`).element;
             App.rootElement.append(alertElement);
         }).catch(error => console.warn(error));
     }
