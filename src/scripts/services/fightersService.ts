@@ -1,10 +1,13 @@
 import { callApi } from '../helpers/apiHelper';
 
-interface IFighters {
-  [propName : number] : { _id: string, name: string, src: string }
-}
+interface IFighter {
+  _id: string;
+  name: string;
+  source: string;
+} 
 
-interface IFighterDetails {
+
+interface IFighterGameDetails {
   _id: string;
   name: string;
   health: number;
@@ -14,7 +17,7 @@ interface IFighterDetails {
 }
 
 class FighterService {
-  static async getFighters() : Promise<IFighters> {
+  public static async getFighters() : Promise<IFighter[]> {
     try {
       const endpoint : string = 'fighters.json';
       const apiResult = await callApi(endpoint, 'GET');
@@ -25,7 +28,7 @@ class FighterService {
     }
   }
 
-  static async getFighterDetails(_id) : Promise<IFighterDetails> {
+  public static async getFighterDetails(_id : string) : Promise<IFighterGameDetails> {
     // implement this method
     // endpoint - `details/fighter/${_id}.json`;
     try {
@@ -40,4 +43,4 @@ class FighterService {
 }
 
 // export const fighterService = new FighterService();
-export { FighterService, IFighters, IFighterDetails };
+export { FighterService, IFighter, IFighterGameDetails };

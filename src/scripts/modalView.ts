@@ -1,4 +1,5 @@
 import { View, IAttributes } from './view';
+import { IFighterGameDetails } from './services/fightersService';
 
 interface IFields {
   health: number;
@@ -6,16 +7,21 @@ interface IFields {
   defense: number;
 }
 
+interface IModalView {
+  formElement : HTMLFormElement;
+  createModal(fighterDetails : IFighterGameDetails, handleSubmit : SubmitHandler) : void;
+}
+
 type SubmitHandler = (event : Event, id: string) => void;
 
-class modalView extends View {
+class modalView extends View implements IModalView {
   public formElement : HTMLFormElement;
-  constructor(fighterDetails : IFighterDetails, ) {
+  constructor(fighterDetails : IFighterGameDetails, handleSubmit : SubmitHandler) {
     super();
     this.createModal(fighterDetails, handleSubmit);
   }
 
-  public createModal(fighterDetails : IFighterDetails, handleSubmit : SubmitHandler) : void {
+  public createModal(fighterDetails : IFighterGameDetails, handleSubmit : SubmitHandler) : void {
     const modalContentElement : HTMLDivElement = this.createModalContent(fighterDetails, handleSubmit);
 
     this.element = <HTMLDivElement>this.createElement({ tagName: 'div', className: 'modal' });
@@ -27,7 +33,7 @@ class modalView extends View {
     }, false);
   }
 
-  public createModalContent(fighterDetails : IFighterDetails, handleSubmit : (event : Event, id: string) => void) : HTMLDivElement {
+  public createModalContent(fighterDetails : IFighterGameDetails, handleSubmit : (event : Event, id: string) => void) : HTMLDivElement {
     const modalContentElement : HTMLDivElement = <HTMLDivElement>this.createElement({ tagName: 'div', className: 'modal-content' });
     const modalHeaderElement : HTMLHeadingElement = this.createModalHeader(fighterDetails.name);
     const modalBodyElement : HTMLDivElement = this.createModalBody(fighterDetails, handleSubmit);
@@ -60,7 +66,7 @@ class modalView extends View {
   }
 
 
-  public createModalBody(fighterDetails : IFighterDetails, handleSubmit : (event : Event, id: string) => void) : HTMLDivElement {
+  public createModalBody(fighterDetails : IFighterGameDetails, handleSubmit : (event : Event, id: string) => void) : HTMLDivElement {
     const { health, attack, defense, source } = fighterDetails;
     const modalBodyElement : HTMLDivElement = <HTMLDivElement>this.createElement({ tagName: 'div', className: 'modal-body' });
     const figherImageElement : HTMLImageElement = this.createFighterImage(source);
@@ -85,8 +91,8 @@ class modalView extends View {
     });
 
     Object.keys(fields).forEach(field => {
-      const infoLabelElement = this.createInfoLabel(field);
-      const figherFieldElement = this.createFigherField(field, fields[field]);
+      const infoLabelElement : HTMLSpanElement = this.createInfoLabel(field);
+      const figherFieldElement : HTMLInputElement = this.createFigherField(field, fields[field]);
       formElement.append(infoLabelElement, figherFieldElement);
     });
 
@@ -148,4 +154,4 @@ class modalView extends View {
   }
 }
 
-export { modalView, IFighterDetails };
+export { modalView };

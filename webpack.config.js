@@ -1,15 +1,11 @@
 const path = require('path');
 
 module.exports = {
-  entry: './index.js',
+  entry: './index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'), 
     filename: 'bundle.js',
     publicPath: '/dist/'
-  },
-  resolve: {
-    modulesDirectories: ['node_modules'],
-    extensions: ['', '.js', '.ts'],
   },
   module: {
     rules: [
@@ -31,11 +27,14 @@ module.exports = {
         use: ["style-loader", "css-loader"]
       },
       {
-        test: /\.tsx?$/, 
-        loaders: ['ts-loader', 'babel-loader'], 
+        test: /\.ts?$/, 
+        loaders: ['babel-loader', 'ts-loader'], 
         exclude: /node_modules/
       }
     ]
+  },
+  resolve: {
+    extensions: ['.ts', '.js', '.json']
   },
   mode: 'development',
   devServer: {

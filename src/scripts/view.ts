@@ -8,13 +8,13 @@ interface IElementProps {
   attributes?: IAttributes;
 }
 
-// interface IElement { 
-//   element: HTMLElement;
-// }
+interface IView { 
+  element: HTMLElement;
+}
 
 type Handler = (event : Event) => void;
 
-class View {
+class View implements IView {
   public element: HTMLElement;
 
   public createElement(elementProps : IElementProps): HTMLElement {

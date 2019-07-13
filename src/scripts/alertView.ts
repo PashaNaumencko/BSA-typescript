@@ -1,13 +1,17 @@
 import { View, Handler } from './view';
 
-class AlertView extends View {
+interface IAlertView {
+    createAlert(message : string, isWarning : boolean) : void;
+}
+
+class AlertView extends View implements IAlertView {
     constructor(message : string, isWarning : boolean = false) {
         super();
 
         this.createAlert(message, isWarning);
     }
 
-    public createAlert(message : string, isWarning : boolean) {
+    public createAlert(message : string, isWarning : boolean) : void {
         this.element = <HTMLDivElement>this.createElement({ 
             tagName: 'div', 
             className: 'alert',
@@ -17,8 +21,8 @@ class AlertView extends View {
         }
         
 
-        const messageElement = this.createMessage(message);
-        const closeAlertElement = this.createCloseButton('&times;', event => this.element.remove());
+        const messageElement : HTMLSpanElement = this.createMessage(message);
+        const closeAlertElement : HTMLSpanElement = this.createCloseButton('&times;', event => this.element.remove());
         
         this.element.append(messageElement, closeAlertElement);
     }

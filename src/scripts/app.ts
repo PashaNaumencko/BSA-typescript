@@ -1,7 +1,12 @@
 import FightersView from './fightersView';
 import { FighterService } from './services/fightersService';
+import { IFighter } from './services/fightersService';
 
-class App {
+interface IApp {
+  startApp() : Promise<void> ;
+}
+
+class App implements IApp {
   constructor() {
     this.startApp();
   }
@@ -9,13 +14,13 @@ class App {
   static rootElement : HTMLElement = document.getElementById('root');
   static loadingElement : HTMLElement = document.getElementById('loading-overlay');
 
-  async startApp() {
+  async startApp() : Promise<void> {
     try {
       App.loadingElement.style.visibility = 'visible';
       
-      const fighters = await FighterService.getFighters();
-      const fightersView = new FightersView(fighters);
-      const fightersElement = fightersView.element;      
+      const fighters : IFighter[] = await FighterService.getFighters();
+      const fightersView : FightersView = new FightersView(fighters);
+      const fightersElement : HTMLElement = fightersView.element;      
 
       App.rootElement.append(fightersElement);
     } catch (error) {
