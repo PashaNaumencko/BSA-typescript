@@ -1,5 +1,12 @@
 # stage-2-es6-for-everyone
 
+## Simple Street Fighters Game
+
+### Stack:
+
+1. Typescript
+2. Webpack
+
 ## Instalation
 
 `npm install`
